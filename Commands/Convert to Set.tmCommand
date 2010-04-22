@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+stack = Array.new
+action ||= 'set'
+
+ENV['TM_SELECTED_TEXT'].each_line do |line|
+  if line =~ /([^\{]+)\{\s*$/ then
+    # Line ends with a {, push it on to the stack
+    stack &lt;&lt; $1.strip
+  end
+  if line =~ /([^;]+);\s*$/ then
+    # Line ends with a ;, print the full delete line
+    puts "#{action} #{stack * ' '} #{$1.strip}"
+  end
+  if line =~ /\}\s*$/ then
+    # Line ends with a }, pop last item off stack
+    stack.pop
+  end
+end
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>@&gt;</string>
+	<key>name</key>
+	<string>Convert to Set</string>
+	<key>output</key>
+	<string>replaceSelectedText</string>
+	<key>uuid</key>
+	<string>2BBAD1DB-87C1-443C-8C1D-B2BD1791E184</string>
+</dict>
+</plist>
